@@ -1,22 +1,42 @@
+// 1：引入vue 和 vue-router
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Home from '../views/Home.vue'
 
+// 2：让vue使用路由插件
 Vue.use(VueRouter)
 
-const routes = [
+// 3: 创建路由对象，引入路径属性
+const Home = () => import('views/home/Home.vue')
+const Cate = () => import('views/cate/Cate.vue')
+const Shop = () => import('views/shop/Shop.vue')
+const Profile = () => import('views/profile/Profile.vue')
+const Detail = () => import('views/detail/Detail.vue')
+
+
+const routes  = [
   {
-    path: '/',
-    name: 'Home',
+    path: '',
+    redirect: '/home'
+  },
+  {
+    path: '/home',
     component: Home
   },
   {
-    path: '/about',
-    name: 'About',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
+    path: '/cate',
+    component: Cate
+  },
+  {
+    path: '/shop',
+    component: Shop
+  },
+  {
+    path: '/profile',
+    component: Profile
+  },
+  {
+    path: '/detail/:iid',
+    component: Detail  
   }
 ]
 
