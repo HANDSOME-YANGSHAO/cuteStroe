@@ -35,6 +35,7 @@ export default {
   methods: {
     itemClick(index) {
       this.currentIndex = index
+      this.$emit('themeClick', index)
     },
     back() {
     // 两者的效果是相同的，都采用了history模式

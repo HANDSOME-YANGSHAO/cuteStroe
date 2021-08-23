@@ -1,12 +1,21 @@
 <template>
   <div id="detail">
-    <detail-nav-bar class="detail-nav"/>
-    <scroll class="content" ref="scroll">
+    <detail-nav-bar class="detail-nav" @themeClick="titileClick" ref="detailNav"/>
+    <scroll class="content" ref="scroll" @scroll="scroll" :probe-type="3">
+      <div>{{this.$store.state.cartList}}</div>
       <detail-swiper :topImg="topImages"/>
       <detail-base-info :goodsInfo="goodsInfo"/>
       <detail-shop-info :shop="shopInfo"/>
       <detail-goods-info :detail-info="detaiGoodsInfo" @loadImgEvent="imgLoad"/>
+      <detail-params :paramInfo="goodsParams" ref="params"/>
+      <detail-comment-info :comment="commentInfo" class="comment" ref="comments"/>
+      <goods-list :goods="recommend" class="recommendInfo" ref="recommends"/>
     </scroll>
+    <detail-bottom-bar class="bar-bottom" @addCart="addToCart"/>
+    <back-top
+      v-show="isBackTopShow"
+      @click.native="backTopClick"
+    />
   </div>
 </template>
 
@@ -16,10 +25,17 @@ import detailNavBar from "./childComps/detailNavBar.vue"
 import DetailBaseInfo from "./childComps/DetailBaseInfo.vue"
 import DetailShopInfo from "./childComps/DetailShopInfo.vue"
 import DetailGoodsInfo from './childComps/DetailGoodsInfo.vue'
+import DetailParams from "./childComps/DetailParams.vue"
+import DetailCommentInfo from './childComps/DetailCommentInfo.vue'
+import DetailBottomBar from "./childComps/DetailBottomBar.vue"
+
 
 import Scroll from "components/common/scroll/Scroll.vue"
-import {getDetail,Goods,Shop} from "network/detail"
+import GoodsList from "components/content/Goods/GoodsList.vue"
+import {getDetail, getRecommend, Goods,Shop, GoodsParams} from "network/detail"
 
+import { debounce } from "common/utiles"
+import { imgLoadedMixIn, backTopMixin} from "common/mixin"
 
 export default {
   name: 'Detail',
@@ -29,26 +45,37 @@ export default {
     DetailBaseInfo,
     DetailShopInfo,
     DetailGoodsInfo,
+    DetailParams,
+    DetailCommentInfo,
+    DetailBottomBar,
+    GoodsList,
     Scroll
   },
+  mixins: [imgLoadedMixIn,backTopMixin],
   data(){
     return{
       iid : null,
       topImages: null,
       goodsInfo: {},
       shopInfo: {},
-      detaiGoodsInfo: {}
+      detaiGoodsInfo: {},
+      goodsParams: {},
+      commentInfo: {},
+      recommend: [],
+      themeTopYs: [],
+      getThemeTopYs: null,
+      currentIndex: 0
     }
   },
   created() {
     // 1.让详情组件初始化的时候保存路由传入进来的参数
     this.iid = this.$route.params.iid
 
-    // 2.根据传入的参数去请求数据
+    // 2.根据传入的参数去请求详情页面的主要数据
     getDetail(this.iid).then( (res) => {
 
       const data = res.result
-      console.log(data)
+      // console.log(data)
 
       // 抽离出轮播图组件的数据
       this.topImages = data.itemInfo.topImages
@@ -61,23 +88,87 @@ export default {
 
       // 抽离出商品的详细信息数据
       this.detaiGoodsInfo = data.detailInfo
+
+      // 抽离出商品的参数信息
+      this.goodsParams = new GoodsParams(data.itemParams.info, data.itemParams.rule)
+
+      // 抽离出评论的数据
+      if (data.rate.cRate !== 0) {
+        this.commentInfo = data.rate.list[0];
+      }
     })
+  
+    // 3.请求推荐物品的数据
+    getRecommend().then((res) => {
+      this.recommend = res.data.list
+    })
+
+    // 4.获取各主题的offset的防抖函数
+    this.getThemeTopYs = debounce(() => {
+      this.themeTopYs = []
+      this.themeTopYs.push(0)
+      this.themeTopYs.push(this.$refs.params.$el.offsetTop)
+      this.themeTopYs.push(this.$refs.comments.$el.offsetTop)
+      this.themeTopYs.push(this.$refs.recommends.$el.offsetTop)
+      this.themeTopYs.push(Number.MAX_VALUE)
+      // console.log(this.themeTopYs)
+    }, 50)
+  
   },
   methods: {
     imgLoad() {
-      this.$refs.scroll.refresh()
+      this.newRefresh()
+      this.getThemeTopYs()
+    },
+    titileClick(index) {
+      this.$refs.scroll.scrollTo(0, -this.themeTopYs[index], 300)
+    },
+    scroll(position) {
+      const positionY = -position.y
+      // 这里要根据之前获取到的offset那个数组，加个最大值，当作一个区间处理，可以用for循环去遍历这个区间，然后用
+      // 当前滚动条的偏移去做一个判断是否属于该区间，如果属于该区间就执行该事件====》让导航的currentIndex变为现在的值
+      for(let i = 0 ; i<this.themeTopYs.length-1 ;i++ ) {
+        if ( this.currentIndex !== i && (positionY >= this.themeTopYs[i] && positionY < this.themeTopYs[i+1])) {
+          this.currentIndex = i
+          this.$refs.detailNav.currentIndex = this.currentIndex
+        }
+      }
+      // 判断backTop组件是否显示
+      this.listenBackTopShow(position)
+    },
+    addToCart() {
+      const product = {}
+      product.img = this.topImages[0]
+      product.title = this.goodsInfo.title
+      product.desc = this.goodsInfo.desc
+      product.price = this.goodsInfo.realPrice
+      product.iid = this.iid
+      
+      // 这里本来是用commit直接调mutation的，但是这样mutation里面逻辑复杂了，并且不同的分支是干的不同的事情，可能让次数加1
+      // 也可能是让购物车列表再加1，都有可能，到时候不好做判断，规范点的话mutation一个方法只能做一件事情，所以让复杂的判断逻辑去
+      // 去actions里面做了
+      this.$store.dispatch('addTocar', product)
     }
+  },
+  destroyed() {
+    // 在混入的通过事件总线监听GoodsListIetm组件的图片加载事件，然后当组件销毁或者未激活状态的情况就会取消该组件对
+    // 事件总线的该图片加载事件的监听 ======>>哪个页面激活了就让哪个页面去监听事件总线上的事件，如果不激活或者销毁
+    // 就让该页面不监听，因为GoodsListIetm组件在其他页面也可能复用，也可能发出全局事件，此时没有激活的页面就不需要
+    // 再去监听这个全局性的事件了
+    this.$bus.$off('refreshBSHeight',this.loadListener)
   }
 }
 </script>
 
 <style scoped>
   #detail{
+    height: 100vh;
+    overflow: hidden;
     position: relative;
     z-index: 9;
   }
   .content{
-    height: calc(100vh - 44px);
+    height: calc(100vh - 93px);
     background-color: #fff;
   }
   .detail-nav{
@@ -85,4 +176,12 @@ export default {
     position: relative;
     z-index: 9;
   }
+  .recommendInfo {
+    padding-top: 20px  
+  }
+ .bar-bottom {
+   height: 49px;
+   background-color: #fff;
+   position: relative;  
+ }
 </style>

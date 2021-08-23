@@ -73,7 +73,7 @@ export function request(config){
 
       //2.2响应拦截
   instance.interceptors.response.use(res => {
-    console.log(res,'响应拦截器');
+    // console.log(res,'响应拦截器');
     return res.data;
   },err => {
     console.log(err);

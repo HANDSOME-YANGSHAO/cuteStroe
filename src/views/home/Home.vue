@@ -32,8 +32,7 @@
 
     <back-top
       v-show="isBackTopShow"
-      @click.native="backTopClick"
-      class="backTop" />
+      @click.native="backTopClick" />
   </div>
 </template>
 
@@ -43,7 +42,7 @@ import navBar from 'components/common/navbar/NavBar'
 import TabControl from 'components/content/TabControl/tabcontrol.vue'
 import GoodsList from 'components/content/Goods/GoodsList.vue'
 import Scroll from 'components/common/scroll/Scroll.vue'
-import BackTop from 'components/content/backTop/BackTop.vue'
+
 
 //这些组件是本组件（本页面内）对应的相关子组件
 import HomeSwiper from './childHome/HomeSwiper'
@@ -52,13 +51,14 @@ import FeatureViews from './childHome/FeatureViews.vue'
 
 //相关的工具函数
 import {getHomeMultidata,getHomeGoods} from 'network/home'
-import {debouncce} from 'common/utiles'
 
+// 导入混入
+import { imgLoadedMixIn, backTopMixin } from "common/mixin" 
 
 export default {
   name: 'Home',
+  mixins: [imgLoadedMixIn, backTopMixin],
   created() {
-
     //在home组件刚刚初始化的时候就去进行网络请求，把数据请求回来保存，可以增加用户体验，而不是
     //在每个小组件才初始化的时候去请求数据，那样容易体验不好，全是加载页面
     this.getHomeMultidata();
@@ -70,23 +70,12 @@ export default {
 
   },
   mounted() {
-    const refresh = debouncce(() => {
-      this.$refs.scroll && this.$refs.scroll.refresh()
-    }, 50)
-
-    // 监听事件总线bus发出来的事件
-    this.$bus.$on('refreshBSHeight', () => {
-      refresh()
-    })
-
-
     // 组件是没有相关的dom属性的，但是$el这个组件的属性是可以指向该组件的模板，这个时候就可以获取到dom属性了
     // but此时获取到的offsetTop是并不准确的，因为此时是在home组件挂载dom元素的时候获取offset，这个时候组件里面的
     // 图片可能还没有加载，所以应该等到TabControl这个组件前面的图片加载好再去获取那个offset，而且经过测试，这里除了
     // 轮播图以外的图片加载都是非常快的，所以一般轮播图图片加载完毕之后就可以获取offset了此时图片基本加载完毕
     // 所以这里=====>监听轮播图的图片加载完成再去获取offset
     // console.log(this.$refs.tabControl2.$el.offsetTop)
-
   },
   activated() {
     this.$refs.scroll.scrollTo(0, this.saveY, 0)
@@ -94,6 +83,7 @@ export default {
   },
   deactivated() {
     this.saveY = this.$refs.scroll.getScrollY()
+    this.$bus.$off('refreshBSHeight', this.loadListener)
   },
   components: {
     navBar,
@@ -103,8 +93,7 @@ export default {
     RecommendViews,
     FeatureViews,
     GoodsList,
-    Scroll,
-    BackTop
+    Scroll
   },
   data(){
     return {
@@ -116,7 +105,6 @@ export default {
         pop: {page:0,list:[]},
         new: {page:0,list:[]}
       },// 该数据结构是用来存储相关商品数据的，并且让home组件才初始化的时候，就去请求第一页的的数据
-      isBackTopShow: false,
       tabOffsetTop: 0,// 用来记住TabControl组件的偏移位置，为了完成吸顶的效果
       isTabShow: false,
       saveY: 0
@@ -129,10 +117,10 @@ export default {
       switch(index){
         case 0:
           this.currentType = 'pop'
-          break;
+          break
         case 1:
           this.currentType = 'new'
-          break;
+          break
         case 2:
           this.currentType = 'sell'
           break
@@ -140,11 +128,8 @@ export default {
       this.$refs.tabControl1.currentIndex = index
       this.$refs.tabControl2.currentIndex = index
     },
-    backTopClick(){
-      this.$refs.scroll.scrollTo(0,0)
-    },
     scroll (position){
-      this.isBackTopShow = (-position.y) >1000
+      this.listenBackTopShow(position)
       this.isTabShow = (-position.y) >= this.tabOffsetTop
     },
     loadMore() {
