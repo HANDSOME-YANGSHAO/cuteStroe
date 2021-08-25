@@ -12,7 +12,7 @@ export const imgLoadedMixIn = {
   mounted() {
     this.newRefresh = debounce(() => {
       this.$refs.scroll && this.$refs.scroll.refresh()
-    }, 50)
+    }, 300)
 
     this.loadListener = () => {
       this.newRefresh()

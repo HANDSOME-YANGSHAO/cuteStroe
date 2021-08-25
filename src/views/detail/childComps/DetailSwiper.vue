@@ -1,7 +1,7 @@
 <template>
   <swiper class="detail-class">
     <swiper-item v-for="item in topImg" :key="item">
-      <img :src="item" alt="">
+      <img v-lazy="item" alt="">
     </swiper-item>
   </swiper>
 </template>
