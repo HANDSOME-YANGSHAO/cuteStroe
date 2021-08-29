@@ -21,5 +21,8 @@ export default {
     }
     // 购物车为空全选默认是不选中的,返回false
     return false
+  },
+  checkedLength (state) {
+    return state.cartList.filter(item => item.checked ).length
   }
 }

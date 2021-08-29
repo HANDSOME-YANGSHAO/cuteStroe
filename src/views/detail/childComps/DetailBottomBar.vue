@@ -41,6 +41,9 @@ export default {
 <style scoped>
 
   .bottom-bar {
+    height: 49px;
+    background-color: #fff;
+    width: 375px;
     display: flex;
     font-size: 10px;
     box-shadow: 0px 0px 4px #888888;

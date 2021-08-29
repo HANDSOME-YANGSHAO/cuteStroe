@@ -10,7 +10,7 @@ import GoodsListItem from './GoodsLIstItem.vue'
 
 export default {
   name: 'GoodsList',
-  //父组件调用该组件的时候，传啥数据过来它就该数据进行一个数据的展示
+  // 父组件调用该组件的时候，传啥数据过来它就该数据进行一个数据的展示
   props: {
     goods: {
       type: Array,

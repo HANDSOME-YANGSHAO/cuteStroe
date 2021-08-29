@@ -12,15 +12,14 @@ export const imgLoadedMixIn = {
   mounted() {
     this.newRefresh = debounce(() => {
       this.$refs.scroll && this.$refs.scroll.refresh()
-    }, 300)
+    }, 150)
 
     this.loadListener = () => {
       this.newRefresh()
     }
     // 监听事件总线bus发出来的事件
     this.$bus.$on('refreshBSHeight', this.loadListener)
-  }
-}
+  }}
 
 export const backTopMixin = {
   data() {

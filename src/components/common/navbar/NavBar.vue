@@ -27,6 +27,7 @@ export default {
 
 <style>
   .navBar{
+    font-size: 15px;
     display: flex;
     height: 44px;
     line-height: 44px;

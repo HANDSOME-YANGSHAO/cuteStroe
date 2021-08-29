@@ -76,6 +76,9 @@ export default {
     // 轮播图以外的图片加载都是非常快的，所以一般轮播图图片加载完毕之后就可以获取offset了此时图片基本加载完毕
     // 所以这里=====>监听轮播图的图片加载完成再去获取offset
     // console.log(this.$refs.tabControl2.$el.offsetTop)
+    this.$bus.$on('toTop', () => {
+      this.$refs.scroll.scrollTo(0,-this.tabOffsetTop, 10)
+    })
   },
   activated() {
     this.$refs.scroll.scrollTo(0, this.saveY, 0)

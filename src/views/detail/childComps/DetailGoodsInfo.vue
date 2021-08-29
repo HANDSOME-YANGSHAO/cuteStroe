@@ -47,6 +47,7 @@ export default {
   font-size: 0.68rem;
 }
 .goods_info_desc {
+  background-color: #fff;
   font-size: 0.6rem;
   padding: 0.42rem 0.34rem;
 }
@@ -70,6 +71,7 @@ export default {
   color: gray;
 }
 .goods_info_key {
+  background-color: #fff;
   padding: 0.42rem 0.34rem;
 }
 .goods_info_imgs img {

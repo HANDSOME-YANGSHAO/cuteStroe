@@ -1,6 +1,6 @@
 <template>
   <div>
-    <nav-bar>
+    <nav-bar id='detail_nav'>
       <div class="back" slot="left" @click="back">
         <img src="~assets/img/common/back.svg" alt="">
       </div>
@@ -47,6 +47,10 @@ export default {
 </script>
 
 <style scoped>
+  #detail_nav {
+    color: #fff;
+    background-color: #FF8198;
+  }
   .title{
     display: flex;
   }
@@ -54,9 +58,10 @@ export default {
     flex: 1
   }
 .active{
-  color: var(--color-high-text);
+  color: rgba(0, 0, 0, 0.226);
 }
 .back img{
+  width: 25px;
   margin-top: 11px;
 }
 </style>

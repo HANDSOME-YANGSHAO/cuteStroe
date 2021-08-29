@@ -75,6 +75,8 @@ export default {
     }
   },
   created() {
+    this.$bus.$emit('main-tab-bar-hide')
+
     // 1.让详情组件初始化的时候保存路由传入进来的参数
     this.iid = this.$route.params.iid
 
@@ -184,6 +186,7 @@ export default {
     // 就让该页面不监听，因为GoodsListIetm组件在其他页面也可能复用，也可能发出全局事件，此时没有激活的页面就不需要
     // 再去监听这个全局性的事件了
     this.$bus.$off('refreshBSHeight',this.loadListener)
+    this.$bus.$emit('main-tab-bar-show')
   }
 }
 </script>
@@ -198,6 +201,8 @@ export default {
   .content{
     height: calc(100vh - 93px);
     background-color: #fff;
+    position: relative;
+    overflow: hidden;
   }
   .detail-nav{
     background-color: #fff;
@@ -207,9 +212,8 @@ export default {
   .recommendInfo {
     padding-top: 20px  
   }
- .bar-bottom {
-   height: 49px;
-   background-color: #fff;
-   position: relative;  
- }
+  .bar-bottom {
+    position: relative;
+    z-index: 10;
+  }
 </style>

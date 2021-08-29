@@ -118,6 +118,7 @@
 			margin: 10px;
 		}
 	.detail-shop-info{
+		background-color: #fff;
 		border-bottom: 5px solid #eee;
 	}
 </style>

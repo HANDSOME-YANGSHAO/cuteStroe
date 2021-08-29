@@ -10,16 +10,14 @@ export default {
   data() {
     return {
       message: '',
-      isShow: false,
-      toastTimer: null
+      isShow: false
     }
   },
   methods: {
     show(message, duration=1500) {
-      clearTimeout(this.toastTimer)
       this.isShow = true
       this.message = message
-      this.toastTimer = setTimeout(() => {
+      setTimeout(() => {
         this.isShow = false
         this.message = ''
       }, duration) 
@@ -31,13 +29,16 @@ export default {
 <style scoped>
   .toast-message {
     /* 让这个弹窗居中的样式 */
+    font-size: 20px;
     position: fixed;
     top: 50%;
     left: 50%;
     transform: translate(-50%,-50%);
     color: #fff;
     background-color: rgb(0, 0, 0, 0.7);
-    padding: 8px 10px;
+    padding: 10px 15px;
     z-index: 999;
+    border-radius: 5px;
+    box-shadow: 0 0 4px solid #aaa;
   }
 </style>

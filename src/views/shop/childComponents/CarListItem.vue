@@ -71,21 +71,20 @@ export default {
   }
   .top {
     padding: 10px; 
-  }
-  .top {
     height: 70%; 
-   }
+  }
    .top p{
      white-space:nowrap;        /* 不换行 */
      overflow:hidden;           /* 内容超出宽度时隐藏超出部分的内容 */
      text-overflow:ellipsis;    /*溢出时显示省略标记...；需与overflow:hidden;一起使用*/  
    }
    .title {
+     font-size: 12px;
      margin: top 10px;
    }
    .desc {
      margin-top: 10px;
-     font-size: 6px;
+     font-size: 10px;
      color: #A9A9A9;
    }
    .bottom {

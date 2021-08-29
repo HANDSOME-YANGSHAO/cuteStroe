@@ -1,11 +1,11 @@
 <template>
   <div class="tool-bar">
-    <div class="tool-bar-left flex">
+    <div class="tool-bar-left">
       <checked-box @click.native="allCheck" :isChecked="isAllChecked"/>
       <span>全选</span>
     </div>
-    <div class="tool-bar-center flex"><span>合计:{{totalPrice}}</span></div>
-    <div class="tool-bar-right flex"><span>去结算({{length}})</span></div>
+    <div class="tool-bar-center"><span>合计:{{totalPrice}}</span></div>
+    <div class="tool-bar-right" @click="settlement"><span>去结算({{checkedLength}})</span></div>
   </div>
 </template>
 
@@ -14,12 +14,17 @@ import { mapGetters } from 'vuex'
 import CheckedBox from 'components/content/checkedbox/CheckedBox'
 export default {
   name: 'CartBottomBar',
+  data() {
+    return {
+      tip: '请选择商品'
+    }
+  },
   components: {
     CheckedBox
   },
   computed: {
     ...mapGetters({
-      length: 'cartLength',
+      checkedLength: 'checkedLength',
       cartlist: 'cartList',
       isAllChecked: 'isAllChecked'
     }),
@@ -48,6 +53,11 @@ export default {
         this.changeState(true)
       } else{
         this.changeState(false)
+      }
+    },
+    settlement() {
+      if (!this.checkedLength) {
+        this.$toast.show(this.tip, 2000)
       }
     }
   }
@@ -80,6 +90,6 @@ export default {
     text-align: center;
     height: 100%;
     width: 30%;
-    background-color: #FF4403;
+    background-color: #ff6113;
   }
 </style>

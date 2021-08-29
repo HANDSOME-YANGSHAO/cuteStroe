@@ -25,10 +25,10 @@ export default {
     // 这里做判断是因为首页的goodsItem里的数据结构 和 详情页推荐界面的数据结构有一点不一样，就是
     // 图片的存储位置，其他的都是一样的，兼容了两种数据结构，提高组件的复用性
     showImage() {
-      return this.goodsitem.image || this.goodsitem.show.img
+      return this.goodsitem.image || this.goodsitem.img || this.goodsitem.show.img
     },
     id() {
-      return this.goodsitem.iid || this.goodsitem.shop_id
+      return this.goodsitem.iid
     }
   },
   methods: {
