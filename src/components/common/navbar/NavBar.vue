@@ -34,6 +34,8 @@ export default {
     /* 行高和容器高度一致的话，会让文字垂直居中，然后text-align属性可以实现文字在容器里水平居中 */
     text-align: center;
     box-shadow: 0 1px 1px rgb(100,100,100,0.1);
+    background-color:  #FF5677;
+    color: #FFF;
   }
   .left,.right{
     width: 60px;

@@ -16,8 +16,8 @@
         <div slot="tab-bar-text">购物车</div>
       </tab-bar-item>
        <tab-bar-item path="/profile" activeColor="var(--color-tint)">
-        <div slot="tab-bar-icon"><img src="~assets/img/tabbar/profile.svg" alt=""></div>
-        <div slot="tab-bar-icon-active"><img src="~assets/img/tabbar/profile_active.svg" alt=""></div>
+        <div slot="tab-bar-icon"><img src="~assets/img/tabbar/profile.png" alt=""></div>
+        <div slot="tab-bar-icon-active"><img src="~assets/img/tabbar/profile_active.png" alt=""></div>
         <div slot="tab-bar-text">我的</div>
       </tab-bar-item>
     </tab-bar>

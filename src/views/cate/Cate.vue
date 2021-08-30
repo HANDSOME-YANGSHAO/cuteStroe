@@ -51,10 +51,6 @@ export default {
 </script>
 
 <style scoped>
-.category_nav {
-  background-color: var(--color-tint);
-  color: white;
-}
 .main {
   display: flex;
   font-size: 0.6rem;

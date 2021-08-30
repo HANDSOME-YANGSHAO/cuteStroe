@@ -43,8 +43,4 @@ export default {
 </script>
 
 <style scoped>
-  .shop-nav-bar {
-    background-color: var(--color-tint);
-    color: #fff;
-  }
 </style>

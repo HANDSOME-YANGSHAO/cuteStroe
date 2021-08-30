@@ -47,10 +47,6 @@ export default {
 </script>
 
 <style scoped>
-  #detail_nav {
-    color: #fff;
-    background-color: #FF8198;
-  }
   .title{
     display: flex;
   }

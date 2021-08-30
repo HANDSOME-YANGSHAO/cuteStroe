@@ -179,8 +179,6 @@ export default {
   position: relative;
 }
 .homenavbar{
-  background-color: var(--color-tint);
-  color: white;
   /* 
   position: fixed;
   top:0;
