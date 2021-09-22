@@ -20,7 +20,7 @@ Vue.use(toast) //use方法会调用该对象的install方法去进行一系列�
 Vue.use(VueLazyLoad, {
   loading: require('./assets/img/common/c.gif')
 })
-
+  
 // 解决移动端300ms延迟问题，安装这个fastclick库
 // FastClick.attach(document.body)
 

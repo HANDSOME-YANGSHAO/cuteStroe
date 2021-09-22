@@ -57,8 +57,8 @@ export default {
 <style scoped>
 #detail_comment {
   font-size: 0.65rem;
-  padding: 0.42rem 0.34rem;
-  padding: bottom 20px; ;
+  padding: 0.42rem 0.34rem ;
+  padding: bottom 20px ;
   border-bottom: 5px solid #03030321 ;
 }
 .comment_title {
