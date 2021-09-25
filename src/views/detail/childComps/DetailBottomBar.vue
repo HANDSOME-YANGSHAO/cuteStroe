@@ -3,25 +3,25 @@
 
     <div class="left">
       <div class="left-item">
-        <img src="~assets/img/detail/客服.svg" >
+        <img src="~assets/img/detail/customer_service.svg" >
         <p>客服</p>
       </div>
       <div class="left-item">
-        <img src="~assets/img/detail/店铺.svg" >
+        <img src="~assets/img/detail/shop.svg" >
         <p>店铺</p>
       </div>
       <div class="left-item">
-        <img src="~assets/img/detail/收藏.svg" >
+        <img src="~assets/img/detail/Collection.svg" >
         <p>收藏</p>
       </div>
     </div>
 
     <div class="right">
       <div class="shopCar" @click="carClcik">
-        <img src="~assets/img/detail/购物车.svg" >
+        <img src="~assets/img/detail/shopping_car.svg" >
       </div>
       <div class="pay">
-        <img src="~assets/img/detail/代客下单.svg" >
+        <img src="~assets/img/detail/purchase.svg" >
       </div>
     </div>
 

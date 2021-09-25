@@ -6,6 +6,7 @@
 // 隐藏的基本配置文件里面
 
 module.exports = {
+  publicPath: './',
   configureWebpack: {
     resolve: {
       alias: {

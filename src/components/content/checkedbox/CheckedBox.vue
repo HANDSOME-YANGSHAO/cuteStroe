@@ -2,7 +2,7 @@
   <div class="checkbox">
     <img 
       v-if="isChecked"
-      src="~assets/img/shop/勾.svg" />
+      src="~assets/img/shop/Hook.svg" />
   </div>
 </template>
 
