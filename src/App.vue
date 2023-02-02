@@ -7,8 +7,6 @@
   </div>
 </template>
 <script>
-// 测试
-
 import mainTabBar from 'components/content/mainTabBar/maintabbar'
 
 export default {
